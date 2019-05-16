@@ -29,12 +29,12 @@ class Client(object):
                  server_address,
                  buffer_size=1024,
                  verbose=False):
-        """init.
+        """Initialize.
 
         Args:
-            get_reward_command: a list command to get reward.
-            server_address: a tuple of (host, port).
-            buffer_size: buffer size.
+            get_reward_command: list, a list command to get reward.
+            server_address: tuple, a tuple of (host, port).
+            buffer_size: int, buffer size.
         """
         self._get_reward_command = get_reward_command
         self._server_address = server_address
@@ -69,19 +69,18 @@ class Client(object):
         """Get reward.
 
         Args:
-            var: a string that represents variable list.
+            var: str, a string that represents variable list.
 
         Returns:
             float, reward.
         """
-        p_child = subprocess.Popen(
-            self._get_reward_command(var),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+        p_child = subprocess.Popen(self._get_reward_command(var),
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
         out, err = p_child.communicate()
         if self._verbose:
-            print('[INFO] {} client out\n{}\nerr\n{}\n'.format(
-                time.ctime(), out, err))
+            print('[INFO] {} client out\n{}\nerr\n{}\n'.format(time.ctime(),
+                                                               out, err))
         out = out.strip().split('\n')[-1]
         try:
             reward = float(out.split()[0])

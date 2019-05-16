@@ -11,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Greedy controller.
-"""
 from .controller import Controller
 
 
@@ -21,12 +19,12 @@ class GreedyController(Controller):
     """
 
     def __init__(self, range_table):
-        """init.
+        """Initialize.
 
         Args:
-            range_table: variable range table.
-            reduce_rate: reduce rate.
-            init_temperature: init temperature.
+            range_table: list, variable range table.
+            reduce_rate: float, reduce rate.
+            init_temperature: float, init temperature.
         """
         super(GreedyController, self).__init__()
         self._range_table = range_table
@@ -37,9 +35,9 @@ class GreedyController(Controller):
         """Check if the var should be updated using general policy.
 
         Args:
-            reward_new: new reward.
-            reward: reward.
-            iteration: iteration.
+            reward_new: float, new reward.
+            reward: float, reward.
+            iteration: int, iteration.
 
         Returns:
             bool, a list of new variables.
@@ -58,7 +56,7 @@ class GreedyController(Controller):
         """Generate new var.
 
         Args:
-            var: a list of variables.
+            var: list, a list of variables.
 
         Returns:
             list, a list of new variables.

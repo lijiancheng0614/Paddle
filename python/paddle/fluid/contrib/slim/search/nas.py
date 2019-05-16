@@ -24,6 +24,13 @@ class Nas(object):
     """
 
     def __init__(self, controller, get_reward_command, verbose=False):
+        """Initialize.
+
+        Args:
+            controller: Controller object, controller.
+            get_reward_command: list, a list command to get reward.
+            verbose: bool, whether to print logs.
+        """
         self._controller = controller
         self._get_reward_command = get_reward_command
         self._verbose = verbose
@@ -32,9 +39,9 @@ class Nas(object):
         """Search.
 
         Args:
-            max_iterations: max iterations.
-            init_var: init var.
-            init reward: init reward.
+            max_iterations: int, max iterations.
+            init_var: list, init var.
+            init_reward: float, init reward.
 
         Returns:
             tuple, a tuple of (var, reward)
@@ -45,14 +52,11 @@ class Nas(object):
         var_max = var
         reward_max = reward
         if self._verbose:
-            print('[INFO] {} iter 0 reward {} var {}'.format(
-                time.ctime(), reward, var))
+            print('[INFO] {} iter 0 reward {} var {}'.format(time.ctime(),
+                                                             reward, var))
         for iteration in range(1, max_iterations + 1):
             var_new = self._controller.generate_new_var(var)
             reward_new = self.get_reward(str(var_new))
-            if self._verbose:
-                print('[INFO] {} iter {} reward_new {} var_new {}'.format(
-                    time.ctime(), iteration, reward_new, var_new))
             if self._controller.check(reward_new, reward, iteration):
                 reward = reward_new
                 var = var_new[:]
@@ -60,27 +64,30 @@ class Nas(object):
                 reward_max = reward_new
                 var_max = var
             if self._verbose:
-                print('[INFO] {} iter {} reward {} var {}'.format(
-                    time.ctime(), iteration, reward, var))
+                print('[INFO] {} iter {} reward {} var {}'.format(time.ctime(),
+                                                                  iteration,
+                                                                  reward, var))
         return (var_max, reward_max)
 
     def get_reward(self, var):
         """Get reward.
 
         Args:
-            var: a string that represents variable list.
+            var: str, a string that represents variable list.
 
         Returns:
             float, reward.
         """
-        p_child = subprocess.Popen(
-            self._get_reward_command(var),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+        p_child = subprocess.Popen(self._get_reward_command(var),
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
         out, err = p_child.communicate()
         out = out.strip().split('\n')[-1]
         try:
             reward = float(out.split()[0])
+            if self._verbose:
+                print('[INFO] {} var {} out {} reward {}'.format(time.ctime(),
+                                                                 var, out, reward))
         except ValueError:
             print('[WARN] {} out {} err {}'.format(time.ctime(), out, err))
             reward = 0

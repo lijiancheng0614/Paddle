@@ -24,12 +24,12 @@ class SaController(Controller):
     """
 
     def __init__(self, range_table, reduce_rate=0.85, init_temperature=1024):
-        """init.
+        """Initialize.
 
         Args:
-            range_table: variable range table.
-            reduce_rate: reduce rate.
-            init_temperature: init temperature.
+            range_table: list, variable range table.
+            reduce_rate: float, reduce rate.
+            init_temperature: float, init temperature.
         """
         super(SaController, self).__init__()
         self._range_table = range_table
@@ -40,16 +40,16 @@ class SaController(Controller):
         """Check if the var should be updated using general policy.
 
         Args:
-            reward_new: new reward.
-            reward: reward.
-            iteration: iteration.
+            reward_new: float, new reward.
+            reward: float, reward.
+            iteration: int, iteration.
 
         Returns:
             bool, a list of new variables.
         """
         if reward_new > reward:
             return True
-        temperature = self._init_temperature * self._reduce_rate ** iteration
+        temperature = self._init_temperature * self._reduce_rate**iteration
         return np.random.random() <= math.exp(
             (reward_new - reward) / temperature)
 
@@ -65,7 +65,7 @@ class SaController(Controller):
         """Generate new var.
 
         Args:
-            var: a list of variables.
+            var: list, a list of variables.
 
         Returns:
             list, a list of new variables.

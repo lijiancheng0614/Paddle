@@ -23,12 +23,12 @@ class EnumerateController(Controller):
     """
 
     def __init__(self, range_table):
-        """init.
+        """Initialize.
 
         Args:
-            range_table: variable range table.
-            reduce_rate: reduce rate.
-            init_temperature: init temperature.
+            range_table: list, variable range table.
+            reduce_rate: float, reduce rate.
+            init_temperature: float, init temperature.
         """
         super(EnumerateController, self).__init__()
         self._vars = list(product(*[range(_) for _ in range_table]))
@@ -39,9 +39,9 @@ class EnumerateController(Controller):
         """Check if the var should be updated using general policy.
 
         Args:
-            reward_new: new reward.
-            reward: reward.
-            iteration: iteration.
+            reward_new: float, new reward.
+            reward: float, reward.
+            iteration: int, iteration.
 
         Returns:
             bool, a list of new variables.
@@ -60,7 +60,7 @@ class EnumerateController(Controller):
         """Generate new var.
 
         Args:
-            var: a list of variables.
+            var: list, a list of variables.
 
         Returns:
             list, a list of new variables.

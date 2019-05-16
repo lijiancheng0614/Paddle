@@ -30,14 +30,14 @@ class Server(object):
                  num_clients,
                  buffer_size=1024,
                  verbose=False):
-        """init.
+        """Initialize.
 
         Args:
-            controller: controller.
-            address: a tuple of (host, port).
-            num_clients: number of clients.
-            buffer_size: buffer size.
-            verbose: whether to print logs.
+            controller: Controller object, controller.
+            address: tuple, a tuple of (host, port).
+            num_clients: int, number of clients.
+            buffer_size: int, buffer size.
+            verbose: bool, whether to print logs.
         """
         self._controller = controller
         self._address = address
@@ -63,9 +63,9 @@ class Server(object):
         """Run server for search.
 
         Args:
-            max_iterations: max iterations.
-            init_var: init var.
-            init reward: init reward.
+            max_iterations: int, max iterations.
+            init_var: list, init var.
+            init reward: float, init reward.
 
         Returns:
             tuple, a tuple of (var, reward)
@@ -84,9 +84,8 @@ class Server(object):
         for client_index in range(self._num_clients):
             var_new = self._controller.generate_new_var(var)
             task_queue.put((client_index, var_new))
-            Process(
-                target=self._worker,
-                args=(task_queue, done_queue, list_socket_clients)).start()
+            Process(target=self._worker,
+                    args=(task_queue, done_queue, list_socket_clients)).start()
         for iteration in range(1, max_iterations + 1):
             client_index, var_new, reward_new = done_queue.get()
             if self._verbose:
@@ -126,8 +125,8 @@ class Server(object):
         """Get reward from socket.
 
         Args:
-            socket_client: socket of the client.
-            data: data string.
+            socket_client: socket, socket of the client.
+            data: str, data string.
 
         Returns:
             float, reward.
@@ -147,9 +146,9 @@ class Server(object):
         """Worker for one process.
 
         Args:
-            input_queue: input queue.
-            output_queue: output queue.
-            list_socket_clients: a list of socket_clients.
+            input_queue: Queue object, input queue.
+            output_queue: Queue object, output queue.
+            list_socket_clients: list, a list of socket_clients.
         """
         for client_index, var in iter(input_queue.get, 'STOP'):
             result = self._get_reward_from_socket(
