@@ -136,9 +136,8 @@ class SaController(Controller):
         """
         temp_command = copy.deepcopy(self._constrain_command)
         temp_command.append(str(net_arc).replace(' ', ''))
-        child_proc = subprocess.Popen(temp_command,
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
+        child_proc = subprocess.Popen(
+            temp_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         while True:
             if child_proc.poll() is None:
                 time.sleep(0.1)
@@ -151,6 +150,6 @@ class SaController(Controller):
         except Exception as err:
             flops, params = 1e9, 1e9
             print('[ERROR] {}'.format(err))
-        print('net_arc: {}, flops: {}, params: {}'.format(
-            net_arc, flops, params))
+        print('net_arc: {}, flops: {}, params: {}'.format(net_arc, flops,
+                                                          params))
         return flops

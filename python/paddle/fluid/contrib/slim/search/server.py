@@ -65,7 +65,7 @@ class Server(object):
         Args:
             max_iterations: int, max iterations.
             init_var: list, init var.
-            init reward: float, init reward.
+            init_reward: float, init reward.
 
         Returns:
             tuple, a tuple of (var, reward)

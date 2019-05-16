@@ -80,8 +80,8 @@ class Client(object):
             stderr=subprocess.PIPE)
         out, err = p_child.communicate()
         if self._verbose:
-            print('[INFO] {} client out\n{}\nerr\n{}\n'.format(time.ctime(
-            ), out, err))
+            print('[INFO] {} client out\n{}\nerr\n{}\n'.format(time.ctime(),
+                                                               out, err))
         out = out.strip().split('\n')[-1]
         try:
             reward = float(out.split()[0])
