@@ -19,8 +19,8 @@ import time
 import subprocess
 
 
-class Nas(object):
-    """Neural Architecture Search.
+class Searcher(object):
+    """Searcher.
     """
 
     def __init__(self, controller, get_reward_command, verbose=False):

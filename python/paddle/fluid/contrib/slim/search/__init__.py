@@ -14,8 +14,8 @@
 """Init.
 """
 from .sa_controller import SaController
-from .nas import Nas
+from .searcher import Searcher
 from .server import Server
 from .client import Client
 
-__all__ = ['SaController', 'Nas', 'Server', 'Client']
+__all__ = ['SaController', 'Searcher', 'Server', 'Client']

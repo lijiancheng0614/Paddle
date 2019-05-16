@@ -74,13 +74,14 @@ class Client(object):
         Returns:
             float, reward.
         """
-        p_child = subprocess.Popen(self._get_reward_command(var),
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
+        p_child = subprocess.Popen(
+            self._get_reward_command(var),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
         out, err = p_child.communicate()
         if self._verbose:
-            print('[INFO] {} client out\n{}\nerr\n{}\n'.format(time.ctime(),
-                                                               out, err))
+            print('[INFO] {} client out\n{}\nerr\n{}\n'.format(time.ctime(
+            ), out, err))
         out = out.strip().split('\n')[-1]
         try:
             reward = float(out.split()[0])
