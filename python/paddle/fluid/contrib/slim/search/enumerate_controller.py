@@ -11,24 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Enumerate controller.
-"""
+"""Enumerate controller."""
 from itertools import product
 
 from .controller import Controller
 
 
 class EnumerateController(Controller):
-    """Enumerate controller.
-    """
+    """Enumerate controller."""
 
     def __init__(self, range_table):
         """Initialize.
 
         Args:
-            range_table: list, variable range table.
-            reduce_rate: float, reduce rate.
-            init_temperature: float, init temperature.
+            range_table(list): variable range table.
+            reduce_rate(float): reduce rate.
+            init_temperature(float): init temperature.
         """
         super(EnumerateController, self).__init__()
         self._vars = list(product(*[range(_) for _ in range_table]))
@@ -39,12 +37,12 @@ class EnumerateController(Controller):
         """Check if the var should be updated using general policy.
 
         Args:
-            reward_new: float, new reward.
-            reward: float, reward.
-            iteration: int, iteration.
+            reward_new(float): new reward.
+            reward(float): reward.
+            iteration(int): iteration.
 
         Returns:
-            bool, a list of new variables.
+            bool: a list of new variables.
         """
         return reward_new > reward
 
@@ -52,7 +50,7 @@ class EnumerateController(Controller):
         """Generate init var.
 
         Returns:
-            list, a list of variables.
+            list: a list of variables.
         """
         return self._vars[0]
 
@@ -60,10 +58,10 @@ class EnumerateController(Controller):
         """Generate new var.
 
         Args:
-            var: list, a list of variables.
+            var(list): a list of variables.
 
         Returns:
-            list, a list of new variables.
+            list: a list of new variables.
         """
         self._index = (self._index + 1) % self._total
         return self._vars[self._index]

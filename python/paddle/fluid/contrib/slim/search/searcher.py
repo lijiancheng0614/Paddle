@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Neural Architecture Search.
-"""
+"""Searcher."""
 from __future__ import print_function
 
 import time
@@ -20,16 +19,15 @@ import subprocess
 
 
 class Searcher(object):
-    """Searcher.
-    """
+    """Searcher."""
 
     def __init__(self, controller, get_reward_command, verbose=False):
         """Initialize.
 
         Args:
             controller: Controller object, controller.
-            get_reward_command: list, a list command to get reward.
-            verbose: bool, whether to print logs.
+            get_reward_command(list): a list command to get reward.
+            verbose(bool): whether to print logs.
         """
         self._controller = controller
         self._get_reward_command = get_reward_command
@@ -39,12 +37,12 @@ class Searcher(object):
         """Search.
 
         Args:
-            max_iterations: int, max iterations.
-            init_var: list, init var.
-            init_reward: float, init reward.
+            max_iterations(int): max iterations.
+            init_var(list): init var.
+            init_reward(float): init reward.
 
         Returns:
-            tuple, a tuple of (var, reward)
+            tuple: a tuple of (var, reward)
                 where reward is the maximum during searching.
         """
         var = init_var
@@ -72,15 +70,15 @@ class Searcher(object):
         """Get reward.
 
         Args:
-            var: str, a string that represents variable list.
+            var(str): a string that represents variable list.
 
         Returns:
-            float, reward.
+            float: reward.
         """
         p_child = subprocess.Popen(
             self._get_reward_command(var),
-           stdout=subprocess.PIPE,
-           stderr=subprocess.PIPE)
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
         out, err = p_child.communicate()
         out = out.strip().split('\n')[-1]
         try:

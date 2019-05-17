@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Server for Neural Architecture Search.
-"""
+"""Server for Neural Architecture Search."""
 from __future__ import print_function
 
 import time
@@ -21,8 +20,7 @@ from multiprocessing import Process, Queue
 
 
 class Server(object):
-    """Server for Neural Architecture Search.
-    """
+    """Server for Neural Architecture Search."""
 
     def __init__(self,
                  controller,
@@ -33,11 +31,11 @@ class Server(object):
         """Initialize.
 
         Args:
-            controller: Controller object, controller.
-            address: tuple, a tuple of (host, port).
-            num_clients: int, number of clients.
-            buffer_size: int, buffer size.
-            verbose: bool, whether to print logs.
+            controller(Controller object): controller.
+            address(tuple): a tuple of (host, port).
+            num_clients(int): number of clients.
+            buffer_size(int): buffer size.
+            verbose(bool): whether to print logs.
         """
         self._controller = controller
         self._address = address
@@ -47,15 +45,13 @@ class Server(object):
         self._socket_server = None
 
     def start(self):
-        """Start server.
-        """
+        """Start server."""
         self._socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._socket_server.bind(self._address)
         self._socket_server.listen(self._num_clients)
 
     def close(self):
-        """Close server.
-        """
+        """Close server."""
         if self._socket_server is not None:
             self._socket_server.close()
 
@@ -63,12 +59,12 @@ class Server(object):
         """Run server for search.
 
         Args:
-            max_iterations: int, max iterations.
-            init_var: list, init var.
-            init_reward: float, init reward.
+            max_iterations(int): max iterations.
+            init_var(list): init var.
+            init_reward(float): init reward.
 
         Returns:
-            tuple, a tuple of (var, reward)
+            tuple: a tuple of (var, reward)
                 where reward is the maximum during searching.
         """
         list_socket_clients = self._get_clients()
@@ -77,15 +73,16 @@ class Server(object):
         var_max = var
         reward_max = reward
         if self._verbose:
-            print('[INFO] {} iter 0 reward {} var {}'.format(
-                time.ctime(), reward, var))
+            print('[INFO] {} iter 0 reward {} var {}'.format(time.ctime(),
+                                                             reward, var))
         task_queue = Queue()
         done_queue = Queue()
         for client_index in range(self._num_clients):
             var_new = self._controller.generate_new_var(var)
             task_queue.put((client_index, var_new))
-            Process(target=self._worker,
-                    args=(task_queue, done_queue, list_socket_clients)).start()
+            Process(
+                target=self._worker,
+                args=(task_queue, done_queue, list_socket_clients)).start()
         for iteration in range(1, max_iterations + 1):
             client_index, var_new, reward_new = done_queue.get()
             if self._verbose:
@@ -98,8 +95,8 @@ class Server(object):
                 reward_max = reward_new
                 var_max = var
             if self._verbose:
-                print('[INFO] {} iter {} reward {} var {}'.format(
-                    time.ctime(), iteration, reward, var))
+                print('[INFO] {} iter {} reward {} var {}'.format(time.ctime(
+                ), iteration, reward, var))
             var_new = self._controller.generate_new_var(var)
             task_queue.put((client_index, var_new))
         for client_index in range(self._num_clients):
@@ -111,7 +108,7 @@ class Server(object):
         """Get clients.
 
         Returns:
-            list, a list of client sockets.
+            list: a list of client sockets.
         """
         list_socket_clients = list()
         for client_index in range(self._num_clients):
@@ -125,11 +122,11 @@ class Server(object):
         """Get reward from socket.
 
         Args:
-            socket_client: socket, socket of the client.
-            data: str, data string.
+            socket_client(socket): socket of the client.
+            data(str): data string.
 
         Returns:
-            float, reward.
+            float: reward.
         """
         data = data.encode()
         socket_client.send(data)
@@ -146,12 +143,11 @@ class Server(object):
         """Worker for one process.
 
         Args:
-            input_queue: Queue object, input queue.
-            output_queue: Queue object, output queue.
-            list_socket_clients: list, a list of socket_clients.
+            input_queue(Queue object): input queue.
+            output_queue(Queue object): output queue.
+            list_socket_clients(list): a list of socket_clients.
         """
         for client_index, var in iter(input_queue.get, 'STOP'):
             result = self._get_reward_from_socket(
-                list_socket_clients[client_index],
-                str(var).replace(' ', ''))
+                list_socket_clients[client_index], str(var).replace(' ', ''))
             output_queue.put((client_index, var, result))

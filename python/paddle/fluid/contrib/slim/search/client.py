@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Client for Neural Architecture Search.
-"""
+"""Client for Neural Architecture Search."""
 from __future__ import print_function
 
 import time
@@ -21,8 +20,7 @@ import subprocess
 
 
 class Client(object):
-    """Client for Neural Architecture Search.
-    """
+    """Client for Neural Architecture Search."""
 
     def __init__(self,
                  get_reward_command,
@@ -32,9 +30,10 @@ class Client(object):
         """Initialize.
 
         Args:
-            get_reward_command: list, a list command to get reward.
-            server_address: tuple, a tuple of (host, port).
-            buffer_size: int, buffer size.
+            get_reward_command(list): a list command to get reward.
+            server_address(tuple): a tuple of (host, port).
+            buffer_size(int): buffer size.
+            verbose(bool): whether to print logs.
         """
         self._get_reward_command = get_reward_command
         self._server_address = server_address
@@ -43,20 +42,17 @@ class Client(object):
         self._socket_client = None
 
     def start(self):
-        """Start client.
-        """
+        """Start client."""
         self._socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._socket_client.connect(self._server_address)
 
     def close(self):
-        """Close server.
-        """
+        """Close server."""
         if self._socket_client is not None:
             self._socket_client.close()
 
     def run(self):
-        """Run client for search.
-        """
+        """Run client for search."""
         while True:
             data = self._socket_client.recv(self._buffer_size).decode()
             if not data:
@@ -69,10 +65,10 @@ class Client(object):
         """Get reward.
 
         Args:
-            var: str, a string that represents variable list.
+            var(str): a string that represents variable list.
 
         Returns:
-            float, reward.
+            float: reward.
         """
         p_child = subprocess.Popen(
             self._get_reward_command(var),

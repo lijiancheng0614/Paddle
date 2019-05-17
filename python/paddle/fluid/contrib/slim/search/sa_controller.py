@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Simulated annealing controller.
-"""
+"""Simulated annealing controller."""
 from __future__ import print_function
 
 import copy
@@ -25,8 +24,7 @@ from .controller import Controller
 
 
 class SaController(Controller):
-    """Simulated annealing controller.
-    """
+    """Simulated annealing controller."""
 
     def __init__(self,
                  range_table,
@@ -40,14 +38,14 @@ class SaController(Controller):
         """Initialize.
 
         Args:
-            range_table: list, variable range table.
-            reduce_rate: float, reduce rate.
-            init_temperature: float, init temperature.
-            constrain: bool, whether constrain.
-            constrain_command: str, constrain command.
-            max_threshold: float, max threshold.
-            min_threshold: float, min threshold.
-            max_iter_number: int, max iteration number.
+            range_table(list): variable range table.
+            reduce_rate(float): reduce rate.
+            init_temperature(float): init temperature.
+            constrain(bool): whether constrain.
+            constrain_command(str): constrain command.
+            max_threshold(float): max threshold.
+            min_threshold(float): min threshold.
+            max_iter_number(int): max iteration number.
         """
         super(SaController, self).__init__()
         self._range_table = range_table
@@ -63,12 +61,12 @@ class SaController(Controller):
         """Check if the var should be updated using general policy.
 
         Args:
-            reward_new: float, new reward.
-            reward: float, reward.
-            iteration: int, iteration.
+            reward_new(float): new reward.
+            reward(float): reward.
+            iteration(int): iteration.
 
         Returns:
-            bool, a list of new variables.
+            bool: a list of new variables.
         """
         if reward_new > reward:
             return True
@@ -80,7 +78,7 @@ class SaController(Controller):
         """Generate init var.
 
         Returns:
-            list, a list of variables.
+            list: a list of variables.
         """
         if self._constrain is None:
             return [np.random.randint(_) for _ in self._range_table]
@@ -105,10 +103,10 @@ class SaController(Controller):
         """Generate new var.
 
         Args:
-            var: list, a list of variables.
+            var(list): a list of variables.
 
         Returns:
-            list, a list of new variables.
+            list: a list of new variables.
         """
         var_new = var[:]
         index = int(len(self._range_table) * np.random.random())
@@ -129,10 +127,10 @@ class SaController(Controller):
         """Get flops.
 
         Args:
-            net_arc: list, network architecture.
+            net_arc(list): network architecture.
 
         Returns:
-            float, flops.
+            float: flops.
         """
         temp_command = copy.deepcopy(self._constrain_command)
         temp_command.append(str(net_arc).replace(' ', ''))

@@ -11,20 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Greedy controller."""
 from .controller import Controller
 
 
 class GreedyController(Controller):
-    """Greedy controller.
-    """
+    """Greedy controller."""
 
     def __init__(self, range_table):
         """Initialize.
 
         Args:
-            range_table: list, variable range table.
-            reduce_rate: float, reduce rate.
-            init_temperature: float, init temperature.
+            range_table(list): variable range table.
+            reduce_rate(float): reduce rate.
+            init_temperature(float): init temperature.
         """
         super(GreedyController, self).__init__()
         self._range_table = range_table
@@ -35,12 +35,12 @@ class GreedyController(Controller):
         """Check if the var should be updated using general policy.
 
         Args:
-            reward_new: float, new reward.
-            reward: float, reward.
-            iteration: int, iteration.
+            reward_new(float): new reward.
+            reward(float): reward.
+            iteration(int): iteration.
 
         Returns:
-            bool, a list of new variables.
+            bool: a list of new variables.
         """
         return reward_new > reward
 
@@ -48,7 +48,7 @@ class GreedyController(Controller):
         """Generate init var.
 
         Returns:
-            list, a list of variables.
+            list: a list of variables.
         """
         return [0] * len(self._range_table)
 
@@ -56,10 +56,10 @@ class GreedyController(Controller):
         """Generate new var.
 
         Args:
-            var: list, a list of variables.
+            var(list): a list of variables.
 
         Returns:
-            list, a list of new variables.
+            list: a list of new variables.
         """
         var_new = var[:]
         if self._index < len(var):
