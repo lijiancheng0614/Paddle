@@ -64,9 +64,8 @@ class Searcher(object):
                 reward_max = reward_new
                 var_max = var
             if self._verbose:
-                print('[INFO] {} iter {} reward {} var {}'.format(time.ctime(),
-                                                                  iteration,
-                                                                  reward, var))
+                print('[INFO] {} iter {} reward {} var {}'.format(time.ctime(
+                ), iteration, reward, var))
         return (var_max, reward_max)
 
     def get_reward(self, var):
@@ -78,16 +77,17 @@ class Searcher(object):
         Returns:
             float, reward.
         """
-        p_child = subprocess.Popen(self._get_reward_command(var),
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
+        p_child = subprocess.Popen(
+            self._get_reward_command(var),
+           stdout=subprocess.PIPE,
+           stderr=subprocess.PIPE)
         out, err = p_child.communicate()
         out = out.strip().split('\n')[-1]
         try:
             reward = float(out.split()[0])
             if self._verbose:
-                print('[INFO] {} var {} out {} reward {}'.format(time.ctime(),
-                                                                 var, out, reward))
+                print('[INFO] {} var {} out {} reward {}'.format(time.ctime(
+                ), var, out, reward))
         except ValueError:
             print('[WARN] {} out {} err {}'.format(time.ctime(), out, err))
             reward = 0
