@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Controller for Neural Architecture Search.
-"""
+"""Controller for Neural Architecture Search."""
 
 
 class Controller(object):
