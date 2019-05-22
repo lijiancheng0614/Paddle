@@ -82,6 +82,8 @@ class SaController(Controller):
         """
         if self._constrain is None:
             return [np.random.randint(_) for _ in self._range_table]
+        net_arc = [0 for i in range(len(self._range_table))]
+        self._constrain, _ = self.get_flops(net_arc)
         ratio_start = 0
         ratio_end = self._range_table[0]
         net_arc = [(ratio_start + ratio_end) // 2
@@ -132,10 +134,10 @@ class SaController(Controller):
         Returns:
             float: flops.
         """
-        temp_command = copy.deepcopy(self._constrain_command)
-        temp_command.append(str(net_arc).replace(' ', ''))
         child_proc = subprocess.Popen(
-            temp_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self._constrain_command(net_arc),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
         while True:
             if child_proc.poll() is None:
                 time.sleep(0.1)
