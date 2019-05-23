@@ -67,6 +67,6 @@ class GreedyController(Controller):
                 self._var_index += 1
             else:
                 self._var_index = 0
-                self._index += 1
+                self._index = (self._index + 1) % len(var)
             var_new[self._index] = self._var_index
         return var_new
